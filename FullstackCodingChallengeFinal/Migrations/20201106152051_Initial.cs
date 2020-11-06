@@ -7,6 +7,32 @@ namespace FullstackCodingChallengeFinal.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ClientsModel",
+                columns: table => new
+                {
+                    ClientId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientsModel", x => x.ClientId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompetitorsModel",
+                columns: table => new
+                {
+                    CompetitorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompetitorsModel", x => x.CompetitorId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DepartmentModel",
                 columns: table => new
                 {
@@ -33,6 +59,33 @@ namespace FullstackCodingChallengeFinal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersonModel", x => x.PersonId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyModel",
+                columns: table => new
+                {
+                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientsClientId = table.Column<int>(type: "int", nullable: true),
+                    CompetitorsCompetitorId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyModel", x => x.CompanyId);
+                    table.ForeignKey(
+                        name: "FK_CompanyModel_ClientsModel_ClientsClientId",
+                        column: x => x.ClientsClientId,
+                        principalTable: "ClientsModel",
+                        principalColumn: "ClientId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CompanyModel_CompetitorsModel_CompetitorsCompetitorId",
+                        column: x => x.CompetitorsCompetitorId,
+                        principalTable: "CompetitorsModel",
+                        principalColumn: "CompetitorId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,6 +135,16 @@ namespace FullstackCodingChallengeFinal.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyModel_ClientsClientId",
+                table: "CompanyModel",
+                column: "ClientsClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyModel_CompetitorsCompetitorId",
+                table: "CompanyModel",
+                column: "CompetitorsCompetitorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeDepartmentModel_DepartmentId",
                 table: "EmployeeDepartmentModel",
                 column: "DepartmentId");
@@ -100,7 +163,16 @@ namespace FullstackCodingChallengeFinal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CompanyModel");
+
+            migrationBuilder.DropTable(
                 name: "EmployeeDepartmentModel");
+
+            migrationBuilder.DropTable(
+                name: "ClientsModel");
+
+            migrationBuilder.DropTable(
+                name: "CompetitorsModel");
 
             migrationBuilder.DropTable(
                 name: "DepartmentModel");

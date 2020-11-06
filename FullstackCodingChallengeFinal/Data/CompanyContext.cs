@@ -14,8 +14,26 @@ namespace FullstackCodingChallengeFinal.Data
         {
         }
 
-        public DbSet<FullstackCodingChallengeFinal.Models.PersonModel> PersonModel { get; set; }
+        public CompanyContext()
+        {
+        }
 
-        public DbSet<FullstackCodingChallengeFinal.Models.EmployeeModel> EmployeeModel { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                @"Server = (localdb)\MSSQLLocalDB; " +
+                @"Database = CompanyContext-df8b8282-2937-4644-94fd-63d7e32490a1; " +
+                @"Trusted_Connection = True; ");
+
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
+        public DbSet<EmployeeModel> EmployeeModel { get; set; }
+        public DbSet<CompanyModel> CompanyModel { get; set; }
+        public DbSet<DepartmentModel> DepartmentModel { get; set; }
+        public DbSet<EmployeeDepartmentModel> EmployeeDepartmentModel { get; set; }
+        public DbSet<PersonModel> PersonModel { get; set; }
+        public DbSet<ClientsModel> ClientsModel { get; set; }
+
     }
 }
