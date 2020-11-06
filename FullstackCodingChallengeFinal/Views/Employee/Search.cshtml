@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FullstackCodingChallengeFinal.Models.EmployeeModel>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Search for people</h1>
+    <br />
+
+    @using (Html.BeginForm("Search", "Employee", FormMethod.Get))
+    {
+        @Html.TextBox("search")<input type="submit" value="Search" />
+    }
+
+    <br />
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>SSN</th>
+                <th>Salary</th>
+                <th>EmployeeId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="6" style="color:red">
+                        No match
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.Age)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.SSN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Salary)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
