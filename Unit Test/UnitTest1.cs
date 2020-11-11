@@ -26,17 +26,17 @@ namespace UnitTest
         [Test]
         public void Test_AddOnePerson()
         {
-            DbMethods.AddOnePerson("Chris");
+            DbMethods.AddOnePerson("Jota");
             string[] result = DbMethods.GetAllPersonNames();
-            CollectionAssert.AreEqual(new[] { "Chris" }, result);
+            CollectionAssert.AreEqual(new[] { "Jota" }, result);
         }
 
         [Test]
         public void Test_AddOneClient()
         {
-            DbMethods.AddOneClient("Nordea");
+            DbMethods.AddOneClient("Academy");
             string[] result = DbMethods.GetAllClients();
-            CollectionAssert.AreEqual(new[] { "Nordea" }, result);
+            CollectionAssert.AreEqual(new[] { "Academy" }, result);
         }
 
     }
