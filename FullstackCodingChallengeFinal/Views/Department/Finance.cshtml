@@ -1,4 +1,10 @@
-﻿@{ ViewBag.Title = "Map"; }
+﻿@model IEnumerable<FullstackCodingChallengeFinal.Models.EmployeeDepartmentModel>
+
+
+@{
+    ViewData["Title"] = "Finance";
+}
+
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChI9xlbasKaj333SqcYQUY3UzzEKSaIlA&callback=initMap" type="text/javascript"></script>
@@ -19,27 +25,47 @@
         background-color: white;
     }
 </style>
-<h1 style="text-align: center;">Welcome</h1>
-<div class="row" style=" padding: 20px;">
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Hire or Fire a new Employee</h5>
-                <p class="card-text">Here you can see current employees, hire new ones or fire current ones.</p>
-                <input type="button" value="Click Me" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Employee")'" />
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Potential Employees</h5>
-                <p class="card-text">Here you can add potential employees if you want to hire them later on</p>
-                <input type="button" value="Click Me" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Person")'" />
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+<h1>Finance Department Employees</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>FirstName</p>
+            </th>
+            <th>
+                <p>LastName</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Person.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Person.LastName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DepartmentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DepartmentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DepartmentId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<h3 style="text-align: center; margin: 50px;">Finance department Location</h3>
+
 <div class="container-1">
     <div class="box-3">
         <!-- This is the div that will contain the Google Map -->
@@ -50,21 +76,22 @@
 @section scripts {
     <section class="scripts">
 
-        <script type="text/javascript">$(document).ready(function () {
-                    Initialize();
-                });
+        <script type="text/javascript">
+    $(document).ready(function () {
+                Initialize();
+            });
 
             // Where all the fun happens
             function Initialize() {
 
                 // Google has tweaked their interface somewhat - this tells the api to use that new UI
                 google.maps.visualRefresh = true;
-                var Bergen = new google.maps.LatLng(60.39299, 5.32415);
+                var Oslo = new google.maps.LatLng(59.911491, 10.757933);
 
                 // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
                 var mapOptions = {
                     zoom: 14,
-                    center: Bergen,
+                    center: Oslo,
                     mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
                 };
 
@@ -72,12 +99,12 @@
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
                 // This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
-                var myLatlng = new google.maps.LatLng(60.39299, 5.32415);
+                var myLatlng = new google.maps.LatLng(59.911491, 10.757933);
 
                 var marker = new google.maps.Marker({
                     position: myLatlng,
                     map: map,
-                    title: 'Bergen'
+                    title: 'Oslo'
                 });
 
                 // You can make markers different colors...  google it up!
@@ -86,7 +113,7 @@
 
                 // you can either make up a JSON list server side, or call it from a controller using JSONResult
                 var data = [
-                    { "Id": 1, "PlaceName": "Coding Challenge Company AS", "OpeningHours": "Hei Hei Jens", "GeoLong": "60.39299", "GeoLat": "5.32415" },
+                    { "Id": 1, "PlaceName": "Finance Department", "OpeningHours": "9-17", "GeoLong": "59.911491", "GeoLat": "10.757933" },
                 ];
 
                 // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins

@@ -1,0 +1,24 @@
+﻿@{ ViewBag.Title = "Departments"; }
+
+
+<h1 style="text-align: center;">Departments</h1>
+<div class="row" style=" padding: 20px;">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Finance</h5>
+                <p class="card-text">Finance department</p>
+                <input type="button" value="Click Me" class="btn btn-dark" onclick="location.href='@Url.Action("Finance", "Department")'" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">HR</h5>
+                <p class="card-text">Human Resources department</p>
+                <input type="button" value="Click Me" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Person")'" />
+            </div>
+        </div>
+    </div>
+</div>
