@@ -25,11 +25,19 @@ namespace FullstackCodingChallengeFinal.Controllers
             return View(await _context.DepartmentModel.ToListAsync());
         }
 
+
         public async Task<IActionResult> Finance()
         {
             var companyContext = _context.EmployeeDepartmentModel.Include(e => e.Employee).ThenInclude(p => p.Person);
             return View(await companyContext.ToListAsync());
         }
+
+        public async Task<IActionResult> HR()
+        {
+            var companyContext = _context.EmployeeDepartmentModel.Include(e => e.Employee).ThenInclude(p => p.Person);
+            return View(await companyContext.ToListAsync());
+        }
+
         public IActionResult Departments()
         {
             return View();

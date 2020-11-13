@@ -1,5 +1,147 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<FullstackCodingChallengeFinal.Models.EmployeeDepartmentModel>
+
+
 @{
+    ViewData["Title"] = "HR";
+}
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChI9xlbasKaj333SqcYQUY3UzzEKSaIlA&callback=initMap" type="text/javascript"></script>
+
+<!-- This css is to ensure that the google map contols (zoom bar etc) show and size correctly. -->
+<style>
+    #map_canvas img {
+        max-width: none
+    }
+</style>
+
+<!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
+<style>
+    .infoDiv {
+        height: 200px;
+        width: 300px;
+        -webkit-user-select: none;
+        background-color: white;
+    }
+</style>
+
+
+
+<h1 style="text-align: center; margin: 50px;">Human Resources Department Employees</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>FirstName</p>
+            </th>
+            <th>
+                <p>LastName</p>
+            </th>
+            <th>
+                <p>Employee Id</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.DepartmentId == 2)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Person.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Person.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+<h3 style="text-align: center; margin: 50px;">Human Resources department Location</h3>
+
+<div class="container-1">
+    <div class="box-3">
+        <!-- This is the div that will contain the Google Map -->
+        <div id="map_canvas" style="height: 600px;"></div>
+    </div>
+</div>
+<!-- Enclose the Javascript in a "section" so that it is rendered in the correct order after scripts have been loaded etc -->
+@section scripts {
+    <section class="scripts">
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Initialize();
+            });
+
+            // Where all the fun happens
+            function Initialize() {
+
+                // Google has tweaked their interface somewhat - this tells the api to use that new UI
+                google.maps.visualRefresh = true;
+                var Oslo = new google.maps.LatLng(63.446827, 10.421906);
+
+                // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+                var mapOptions = {
+                    zoom: 14,
+                    center: Oslo,
+                    mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+                };
+
+                // This makes the div with id "map_canvas" a google map
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                // This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
+                var myLatlng = new google.maps.LatLng(59.911491, 10.757933);
+
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title: 'Oslo'
+                });
+
+                // You can make markers different colors...  google it up!
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+
+                // you can either make up a JSON list server side, or call it from a controller using JSONResult
+                var data = [
+                    { "Id": 1, "PlaceName": "HR Department", "OpeningHours": "9-17", "GeoLong": "63.446827", "GeoLat": "10.421906" },
+                ];
+
+                // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+                $.each(data, function (i, item) {
+                    var marker = new google.maps.Marker({
+                        'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                        'map': map,
+                        'title': item.PlaceName
+                    });
+
+                    // Make the marker-pin blue!
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                    // put in some information about each json object - in this case, the opening hours.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "<div class='infoDiv'><h2>" + item.PlaceName + "</h2>" + "<div><h4>Opening hours: " + item.OpeningHours + "</h4></div></div>"
+                    });
+
+                    // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow.open(map, marker);
+                    });
+
+                })
+            }</script>
+    </section>
 }

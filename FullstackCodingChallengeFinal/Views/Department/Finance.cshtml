@@ -28,7 +28,7 @@
 
 
 
-<h1>Finance Department Employees</h1>
+<h1 style="text-align: center; margin: 50px;">Finance Department Employees</h1>
 
 <table class="table">
     <thead>
@@ -39,25 +39,29 @@
             <th>
                 <p>LastName</p>
             </th>
+            <th>
+                <p>Employee Id</p>
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Person.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Person.LastName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DepartmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DepartmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DepartmentId">Delete</a>
-            </td>
-        </tr>
+            if (item.DepartmentId == 1)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Person.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Person.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
